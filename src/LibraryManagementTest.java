@@ -65,17 +65,17 @@ public class LibraryManagementTest {
 
     @Test
     public void testSingletonTransaction() throws Exception {
-        // Use reflection to access Transaction constructor
         Constructor<Transaction> constructor = Transaction.class.getDeclaredConstructor();
         assertTrue(Modifier.isPrivate(constructor.getModifiers()));
 
-        // Attempt to create a new instance
+        // Attempt to create a new instance using reflection
         constructor.setAccessible(true);
         try {
             Transaction newTransaction = constructor.newInstance();
             fail("Singleton violated: Multiple instances created.");
         } catch (Exception e) {
-            assertTrue(e.getCause() instanceof IllegalAccessException);
+            assertTrue(e.getCause() instanceof IllegalStateException);
+            assertEquals("Cannot create another instance of Transaction. Use getTransaction() method.", e.getCause().getMessage());
         }
     }
 }

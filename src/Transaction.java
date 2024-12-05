@@ -1,15 +1,19 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Transaction {
-    private static Transaction instance; // Singleton instance
+    private static Transaction instance;
 
-    private Transaction() {}
+    private Transaction() {
+        if (instance != null) {
+            throw new IllegalStateException("Cannot create another instance of Transaction. Use getTransaction() method.");
+        }
+    }
 
     public static Transaction getTransaction() {
         if (instance == null) {
@@ -41,7 +45,7 @@ public class Transaction {
         }
     }
 
-    public boolean returnBook(Book book, Member member) { // Updated to return boolean
+    public boolean returnBook(Book book, Member member) {
         if (member.getBorrowedBooks().contains(book)) {
             member.returnBook(book);
             book.returnBook();
