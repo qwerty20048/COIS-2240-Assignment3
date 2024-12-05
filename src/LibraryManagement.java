@@ -47,9 +47,13 @@ public class LibraryManagement {
                     System.out.print("Enter book title: ");
                     String title = scanner.next();
 
-                    Book newBook = new Book(bookId, title);
-                    if (library.addBook(newBook)) {
-                        System.out.println("Book added successfully.");
+                    try {
+                        Book newBook = new Book(bookId, title);
+                        if (library.addBook(newBook)) {
+                            System.out.println("Book added successfully.");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
                     break;
 
