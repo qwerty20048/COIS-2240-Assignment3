@@ -3,13 +3,19 @@ public class Book {
     private String title;
     private boolean available;
 
-    public Book(int id, String title) {
+    public Book(int id, String title) throws Exception { // Updated constructor to validate IDs
+        if (!isValidId(id)) {
+            throw new Exception("Invalid book ID: " + id);
+        }
         this.id = id;
         this.title = title;
         this.available = true;
     }
 
-    // Getter methods
+    public boolean isValidId(int id) { // Method to check if the book ID is valid
+        return id >= 100 && id <= 999;
+    }
+
     public int getId() {
         return id;
     }
@@ -22,20 +28,13 @@ public class Book {
         return available;
     }
 
-    // Method to borrow the book
     public void borrowBook() {
         if (available) {
             available = false;
         }
     }
 
-    // Method to return the book
     public void returnBook() {
         available = true;
-    }
-
-    // Method to check if a book id is valid
-    public boolean isValidId(int id) {
-        return id >= 100 && id <= 999;
     }
 }
