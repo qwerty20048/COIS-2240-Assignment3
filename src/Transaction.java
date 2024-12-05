@@ -41,19 +41,21 @@ public class Transaction {
         }
     }
 
-    public void returnBook(Book book, Member member) {
+    public boolean returnBook(Book book, Member member) { // Updated to return boolean
         if (member.getBorrowedBooks().contains(book)) {
             member.returnBook(book);
             book.returnBook();
             String transactionDetails = getCurrentDateTime() + " - Returning: " + member.getName() + " returned " + book.getTitle();
             System.out.println(transactionDetails);
             saveTransaction(transactionDetails);
+            return true;
         } else {
             System.out.println("This book was not borrowed by the member.");
+            return false;
         }
     }
 
-    public void displayTransactionHistory() { // New method to display transaction history
+    public void displayTransactionHistory() {
         try (BufferedReader reader = new BufferedReader(new FileReader("transactions.txt"))) {
             String line;
             System.out.println("Transaction History:");
