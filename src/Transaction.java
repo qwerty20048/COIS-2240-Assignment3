@@ -1,5 +1,7 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,16 +9,16 @@ import java.util.Date;
 public class Transaction {
     private static Transaction instance; // Singleton instance
 
-    private Transaction() {} // Private constructor
+    private Transaction() {}
 
-    public static Transaction getTransaction() { // Getter for Singleton instance
+    public static Transaction getTransaction() {
         if (instance == null) {
             instance = new Transaction();
         }
         return instance;
     }
 
-    public void saveTransaction(String transactionDetails) { // Save transactions to file
+    public void saveTransaction(String transactionDetails) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("transactions.txt", true))) {
             writer.write(transactionDetails);
             writer.newLine();
@@ -31,7 +33,7 @@ public class Transaction {
             member.borrowBook(book);
             String transactionDetails = getCurrentDateTime() + " - Borrowing: " + member.getName() + " borrowed " + book.getTitle();
             System.out.println(transactionDetails);
-            saveTransaction(transactionDetails); // Save transaction to file
+            saveTransaction(transactionDetails);
             return true;
         } else {
             System.out.println("The book is not available.");
@@ -45,13 +47,25 @@ public class Transaction {
             book.returnBook();
             String transactionDetails = getCurrentDateTime() + " - Returning: " + member.getName() + " returned " + book.getTitle();
             System.out.println(transactionDetails);
-            saveTransaction(transactionDetails); // Save transaction to file
+            saveTransaction(transactionDetails);
         } else {
             System.out.println("This book was not borrowed by the member.");
         }
     }
 
-    private String getCurrentDateTime() { // Get current date and time
+    public void displayTransactionHistory() { // New method to display transaction history
+        try (BufferedReader reader = new BufferedReader(new FileReader("transactions.txt"))) {
+            String line;
+            System.out.println("Transaction History:");
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading transaction history: " + e.getMessage());
+        }
+    }
+
+    private String getCurrentDateTime() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(new Date());
     }
